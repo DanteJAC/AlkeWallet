@@ -1,46 +1,41 @@
 package banco;
 
 public class Transaccion {
-    private String origen;
-    private String destino;
-    private double monto;
+    private double montoActual;
 
     // Constructor
-    public Transaccion(String origen, String destino, double monto) {
-        this.origen = origen;
-        this.destino = destino;
-        this.monto = monto;
+    public Transaccion(int cuentaOrigen, int cuentaDestino, double montoActual) {
+        this.montoActual = montoActual;
     }
-   
-    // Método para realizar la transacción
-    public void realizar(CuentaBancaria cuentaOrigen, CuentaBancaria cuentaDestino) {
-        // Verificar si la cuenta de origen tiene suficientes fondos
-        if (cuentaOrigen.consultarSaldo() >= monto) {
-            // Realizar la transferencia
-            cuentaOrigen.realizarRetiro(monto);
-            cuentaDestino.realizarDeposito(monto);
-            System.out.println("Transferencia realizada: $" + monto + " de " + cuentaOrigen.getNumeroCuenta() + " a " + cuentaDestino.getNumeroCuenta());
+
+    // Método para revisar saldo
+    public double revisarSaldo() {
+        return montoActual;
+    }
+
+    // Método para realizar transferencias
+    public void transferir(int cuentaDestino, double monto) {
+        if (monto <= montoActual) {
+            montoActual -= monto;
+            System.out.println("Transferencia de $" + monto + " a la cuenta " + cuentaDestino + " realizada.");
         } else {
-        	
-            System.out.println("Saldo insuficiente para realizar la transferencia.");
+            System.out.println("No hay fondos suficientes para realizar la transferencia.");
         }
-    
- 
-	}
+    }
 
-	/**
-	 * @return the origen
-	 */
-	public String getOrigen() {
-		return origen;
-	}
+    // Método para realizar depósitos
+    public void depositar(double monto) {
+        montoActual += monto;
+        System.out.println("Depósito de $" + monto + " realizado. Nuevo saldo: $" + montoActual);
+    }
 
-	/**
-	 * @return the destino
-	 */
-	public String getDestino() {
-		return destino;
-	}
-
-	
+    // Método para realizar retiros
+    public void retirar(double monto) {
+        if (monto <= montoActual) {
+            montoActual -= monto;
+            System.out.println("Retiro de $" + monto + " realizado. Nuevo saldo: $" + montoActual);
+        } else {
+            System.out.println("No hay fondos suficientes para realizar el retiro.");
+        }
+    }
 }
